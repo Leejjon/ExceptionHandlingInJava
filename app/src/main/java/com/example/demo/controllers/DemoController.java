@@ -1,33 +1,33 @@
 package com.example.demo.controllers;
 
-import com.example.specification.api.ExamplesApi;
-import com.example.specification.model.ExampleSchema;
+import com.example.specification.api.PersonsApi;
+import com.example.specification.model.Person;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
+import java.math.BigDecimal;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-public class DemoController implements ExamplesApi {
+public class DemoController implements PersonsApi {
+    private static final String EXAMPLE_NAME = "Leon";
+
     @GetMapping
     public String helloWorld() {
         return "Hello World!";
     }
 
     @Override
-    public ResponseEntity<ExampleSchema> getExample(String exampleId) {
-        final String existingExampleId = "example";
-        ExampleSchema someResult = new ExampleSchema();
-        if (exampleId.equals(existingExampleId)) {
-            final String iso8601TimeStamp = ZonedDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.ISO_INSTANT);
+    public ResponseEntity<Person> getPersonByName(String name) {
+        if (name.equals(EXAMPLE_NAME)) {
             return ResponseEntity.ok(
-                    someResult.result("Good result")
-                        .timestamp(iso8601TimeStamp)
+                    new Person()
+                            .name("Leon")
+                            .favouritenumber(new BigDecimal(5))
+                            .birthtimestamp(OffsetDateTime.now())
             );
         } else {
             return ResponseEntity.status(404).build();
@@ -35,9 +35,8 @@ public class DemoController implements ExamplesApi {
     }
 
     @Override
-    public ResponseEntity<Void> updateExample(ExampleSchema exampleSchema) {
-        final String existingExampleId = "example";
-        if (exampleSchema.getResult().equals(existingExampleId)) {
+    public ResponseEntity<Void> updatePerson(Person exampleSchema) {
+        if (exampleSchema.getName().equals(EXAMPLE_NAME)) {
             return ResponseEntity.status(200).build();
         } else {
             return ResponseEntity.status(400).build();
@@ -45,13 +44,16 @@ public class DemoController implements ExamplesApi {
     }
 
     @Override
-    public ResponseEntity<List<ExampleSchema>> getExamples(Boolean listHasItems) {
-        List<ExampleSchema> schemas = new ArrayList<>();
-        if (listHasItems == null || !listHasItems) {
-            return ResponseEntity.ok(schemas);
-        } else {
-            schemas.add(new ExampleSchema().result("Good result"));
-            return ResponseEntity.ok(schemas);
+    public ResponseEntity<List<Person>> getPersons(Boolean listHasItems) {
+        List<Person> persons = new ArrayList<>();
+        if (listHasItems != null && listHasItems) {
+            persons.add(
+                    new Person()
+                            .name("Leon")
+                            .favouritenumber(new BigDecimal(5))
+                            .birthtimestamp(OffsetDateTime.now())
+            );
         }
+        return ResponseEntity.ok(persons);
     }
 }

@@ -7,36 +7,30 @@ info:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
   version: 0.0.1-SNAPSHOT
-tags:
-- name: user
-  description: Operations about user
-  externalDocs:
-    description: Find out more about our store
-    url: http://swagger.io
 paths:
-  /examples/{exampleId}:
+  /persons/{name}:
     get:
-      operationId: getExample
-      tags:
-        - example
+      operationId: getPersonByName
       parameters:
-        - name: exampleId
+        - name: name
           in: path
-          description: Path parameter that identifies the example.
+          description: Path parameter of the persons name that is used to identify him/her.
           required: true
           schema:
             type:
               string
       responses:
         200:
-          description: Everything went right, return the example.
+          description: We could find this person, so we return his information.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/example_schema"
-  /examples:
+                $ref: "#/components/schemas/person"
+        401:
+          description: We could not find this person.
+  /persons:
     get:
-      operationId: getExamples
+      operationId: getPersons
       tags:
         - examples
       parameters:
@@ -48,34 +42,44 @@ paths:
             type: boolean
       responses:
         200:
-          description: Everything went right.
+          description: List of persons could be retrieved.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/examples_list"
+                $ref: "#/components/schemas/persons"
     put:
-      operationId: updateExample
+      operationId: updatePerson
       requestBody:
         description: The object to update.
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/example_schema"
+              $ref: "#/components/schemas/person"
       responses:
         200:
-          description: Success.
+          description: Person has been updated succesfully.
 components:
   schemas:
-    example_schema:
+    person:
       type: object
       properties:
-        result:
+        name:
           type: string
-        timestamp:
+        favouritenumber:
+          description: The persons favourite number under ten.
+          type: number
+          minimum: 1
+          maximum: 9
+        birthtimestamp:
           type: string
+          format: date-time
           description: Timestamp in ISO-8601 format.
-    examples_list:
+      required:
+        - result
+        - anumber
+        - timestamp
+    persons:
       type: array
       items:
-        $ref: "#/components/schemas/example_schema"
+        $ref: "#/components/schemas/person"
