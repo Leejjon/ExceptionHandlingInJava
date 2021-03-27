@@ -3,10 +3,12 @@ package com.example.demo;
 import com.example.specification.api.ExamplesApi;
 import com.example.specification.model.ExampleSchema;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,9 +24,22 @@ public class DemoController implements ExamplesApi {
         final String existingExampleId = "example";
         ExampleSchema someResult = new ExampleSchema();
         if (exampleId.equals(existingExampleId)) {
-            return ResponseEntity.ok(someResult.result("Good result"));
+            return ResponseEntity.ok(
+                    someResult.result("Good result")
+                        .timestamp(ZonedDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.ISO_INSTANT))
+            );
         } else {
-            return ResponseEntity.status(404).body(someResult.result("Bad result."));
+            return ResponseEntity.status(404).build();
+        }
+    }
+
+    @Override
+    public ResponseEntity<Void> updateExample(ExampleSchema exampleSchema) {
+        final String existingExampleId = "example";
+        if (exampleSchema.getResult().equals(existingExampleId)) {
+            return ResponseEntity.status(200).build();
+        } else {
+            return ResponseEntity.status(400).build();
         }
     }
 

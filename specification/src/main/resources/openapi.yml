@@ -1,19 +1,12 @@
 openapi: 3.0.2
 info:
-  title: Reflectoring
-  description: "Tutorials on Spring Boot and Java, thoughts about the Software Craft, and relevant book reviews. Because it's just as important to understand the Why as it is to understand the How. Have fun!"
+  title: Example
+  description: "Based the project on https://reflectoring.io/spring-boot-openapi/"
   termsOfService: http://swagger.io/terms/
-  contact:
-    email: petros.stergioulas94@gmail.com
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
   version: 0.0.1-SNAPSHOT
-externalDocs:
-  description: Find out more about Reflectoring
-  url: https://reflectoring.io/about/
-servers:
-- url: https://reflectoring.swagger.io/v2
 tags:
 - name: user
   description: Operations about user
@@ -41,18 +34,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/example_schema"
-        422:
-          description: The input parameters were invalid.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ValidationError"
-        500:
-          description: Server threw an error, returns json error object that contains a timestamp, GUID related to the error and a small error message.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/UnexpectedError"
   /examples:
     get:
       operationId: getExamples
@@ -72,18 +53,18 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/examples_list"
-        422:
-          description: The input parameters were invalid.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ValidationError"
-        500:
-          description: Server threw an error, returns a json error object that contains a timestamp, UUID related to the error and a small error message.
-          content:
-            application/json:
-              schema:
-                $ref: "#/definitions/schemas/UnexpectedError"
+    put:
+      operationId: updateExample
+      requestBody:
+        description: The object to update.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/example_schema"
+      responses:
+        200:
+          description: Success.
 components:
   schemas:
     example_schema:
@@ -91,35 +72,10 @@ components:
       properties:
         result:
           type: string
+        timestamp:
+          type: string
+          description: Timestamp in ISO-8601 format.
     examples_list:
       type: array
       items:
         $ref: "#/components/schemas/example_schema"
-    ValidationError:
-      type: object
-      required:
-        - message
-        - timestamp
-      properties:
-        message:
-          description: Contains the main message of the exception, like whether a parameter was invalid.
-          type: string
-        timestamp:
-          description: Use the ISO 8601 date time notation here. example '2016-01-01T10:00:00'
-          type: string
-    UnexpectedError:
-      type: object
-      required:
-        - guid
-        - message
-        - timestamp
-      properties:
-        uuid:
-          description: A universally unique identifier to this exception. Can be used to track the full exception in the logs.
-          type: string
-        message:
-          description: Contaings the main message of the exception.
-          type: string
-        timestamp:
-          description: Use the ISO 8601 date time notation here. example '2016-01-01T10:00:00'
-          type: string
