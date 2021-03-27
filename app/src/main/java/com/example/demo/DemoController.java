@@ -24,9 +24,10 @@ public class DemoController implements ExamplesApi {
         final String existingExampleId = "example";
         ExampleSchema someResult = new ExampleSchema();
         if (exampleId.equals(existingExampleId)) {
+            final String iso8601TimeStamp = ZonedDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.ISO_INSTANT);
             return ResponseEntity.ok(
                     someResult.result("Good result")
-                        .timestamp(ZonedDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.ISO_INSTANT))
+                        .timestamp(iso8601TimeStamp)
             );
         } else {
             return ResponseEntity.status(404).build();
