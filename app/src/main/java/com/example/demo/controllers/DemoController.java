@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.demo.controllers;
 
 import com.example.specification.api.ExamplesApi;
 import com.example.specification.model.ExampleSchema;
