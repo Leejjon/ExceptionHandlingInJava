@@ -76,9 +76,9 @@ components:
           format: date-time
           description: Timestamp in ISO-8601 format.
       required:
-        - result
-        - anumber
-        - timestamp
+        - name
+        - favouritenumber
+        - birthtimestamp
     persons:
       type: array
       items:
