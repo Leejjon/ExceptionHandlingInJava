@@ -4,8 +4,8 @@ cd app
 mvn spring-boot:run
 
 Browse to:
-http://localhost:8080/examples
-http://localhost:8080/examples/example
+http://localhost:8080/persons
+http://localhost:8080/persons/Leon
 
 API DOCS:
 http://localhost:8080/swagger-ui/index.html
