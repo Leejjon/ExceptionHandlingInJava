@@ -39,7 +39,7 @@ public class DemoController implements PersonsApi {
         if (name.equals(EXAMPLE_NAME)) {
             return ResponseEntity.status(200).build();
         } else {
-            return ResponseEntity.status(400).build();
+            return ResponseEntity.status(404).build();
         }
     }
 
