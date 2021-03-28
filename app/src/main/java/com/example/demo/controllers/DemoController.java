@@ -35,8 +35,8 @@ public class DemoController implements PersonsApi {
     }
 
     @Override
-    public ResponseEntity<Void> updatePerson(Person exampleSchema) {
-        if (exampleSchema.getName().equals(EXAMPLE_NAME)) {
+    public ResponseEntity<Void> updatePerson(String name, Person exampleSchema) {
+        if (name.equals(EXAMPLE_NAME)) {
             return ResponseEntity.status(200).build();
         } else {
             return ResponseEntity.status(400).build();

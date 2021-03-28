@@ -28,6 +28,26 @@ paths:
                 $ref: "#/components/schemas/person"
         401:
           description: We could not find this person.
+    put:
+      operationId: updatePerson
+      parameters:
+        - name: name
+          in: path
+          description: Path parameter of the persons name that is used to identify him/her.
+          required: true
+          schema:
+            type:
+              string
+      requestBody:
+        description: The object to update.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/person"
+      responses:
+        200:
+          description: Person has been updated succesfully.
   /persons:
     get:
       operationId: getPersons
@@ -47,18 +67,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/persons"
-    put:
-      operationId: updatePerson
-      requestBody:
-        description: The object to update.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/person"
-      responses:
-        200:
-          description: Person has been updated succesfully.
 components:
   schemas:
     person:
